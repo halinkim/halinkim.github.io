@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Example Content on Einstein Toolkit Document</title>
+    <link>http://eintk-ko.github.io/docs/example-content/</link>
+    <description>Recent content in Example Content on Einstein Toolkit Document</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Mon, 22 May 2023 00:34:57 +0100</lastBuildDate><atom:link href="http://eintk-ko.github.io/docs/example-content/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Code</title>
+      <link>http://eintk-ko.github.io/docs/example-content/code/</link>
+      <pubDate>Mon, 22 May 2023 00:44:31 +0100</pubDate>
+      
+      <guid>http://eintk-ko.github.io/docs/example-content/code/</guid>
+      <description>Code Block Examples linkCode block language examples
+Go link package main import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;hello world&amp;#34;) } HTML link &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;My First Heading&amp;lt;/h1&amp;gt; &amp;lt;p&amp;gt;My first paragraph.&amp;lt;/p&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; Markdown link # H1 heading **Some bold text** *Italic text example* </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thorns on Einstein Toolkit Document</title>
+    <link>http://eintk-ko.github.io/docs/thorns/</link>
+    <description>Recent content in Thorns on Einstein Toolkit Document</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Mon, 22 May 2023 00:34:57 +0100</lastBuildDate><atom:link href="http://eintk-ko.github.io/docs/thorns/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TwoPunctures</title>
+      <link>http://eintk-ko.github.io/docs/thorns/twopunctures/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://eintk-ko.github.io/docs/thorns/twopunctures/</guid>
+      <description>개요 linkTwoPunctures는 블랙홀 쌍성 초기 데이터를 구성할 때 많이 쓰이는 thorn입니다. Single domain spectral method를 사용합니다. Phys. Rev. D 70, 064011 (2004)
+두 개의 블랙홀에 대해서만 사용할 수 있지만, 하나의 질량을 $0$으로 설정하여 하나의 블랙홀에 대해서도 사용할 수 있습니다.
+구조 link블랙홀의 위치 link핵심적인 파라미터는 par_b, par_m_plus, par_m_minus, par_P_plus[3], par_P_minus[3], par_S_plus[3], par_S_minus[3], center_offset[3]입니다.
+원본 문서에서 제시하는 파라미터의 설명 중 par_b, center_offset[3]은 설명이 명확하지 않습니다. 각각을 $b$, $c_x$, $c_y$, $c_z$라 할 때, 정확히 이들은 다음과 같이 구성됩니다.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,6 +1,6 @@
-baseURL = 'http://eintk-ko.github.io/'
+baseURL = 'http://halinkim.github.io/'
 languageCode = 'ko-kr'
-title = 'Einstein Toolkit Document'
+title = 'DcKim'
 
 [module]
     # uncomment line below for temporary local development of module

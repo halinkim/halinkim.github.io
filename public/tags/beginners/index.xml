@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Beginners on Einstein Toolkit Document</title>
-    <link>http://eintk-ko.github.io/tags/beginners/</link>
-    <description>Recent content in Beginners on Einstein Toolkit Document</description>
+    <title>Beginners on DcKim</title>
+    <link>http://dckim.kr/tags/beginners/</link>
+    <description>Recent content in Beginners on DcKim</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Wed, 23 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://eintk-ko.github.io/tags/beginners/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://dckim.kr/tags/beginners/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>시작하기</title>
-      <link>http://eintk-ko.github.io/docs/quickstart/</link>
+      <title>About</title>
+      <link>http://dckim.kr/docs/about/</link>
       <pubDate>Wed, 23 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://eintk-ko.github.io/docs/quickstart/</guid>
-      <description>info 본 문서에서는 Einstein Toolkit을 설치하는 과정에 대해서 다룹니다. 요구사항 link Linux (Ubuntu 20.04 확인됨) Git, Subversion, Curl, Python2/3, GCC, GFortran, MPI Linux가 Minimal 버전일 경우 위의 패키지를 수동으로 설치해주어야 합니다. 앞서 패키지 리스트 최신화를 권장합니다. sudo apt update # 패키지 리스트 업데이트 sudo apt install git sudo apt-get install subversion sudo apt install curl sudo apt install python2/3 sudo apt-get install build-essential sudo apt-get install gfortran sudo apt-get install mpi 다운로드 link설치 경로 확인 linkEinstein Toolkit을 설치할 적절한 디렉토리를 정하여 이동합니다.</description>
+      <guid>http://dckim.kr/docs/about/</guid>
+      <description>History link 2023.09.23 : 랜딩 페이지가 만들어졌어요! </description>
     </item>
     
   </channel>

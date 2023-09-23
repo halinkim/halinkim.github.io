@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "style.css",
-	"sourceRoot": "/home/halin/web/blog",
+	"sourceRoot": "/home/halin/web/dckim",
 	"sources": [
 		"themes/lotusdocs/assets/docs/scss/style.scss",
 		"themes/lotusdocs/assets/docs/scss/custom/plugins/icons/_google-material.scss",

@@ -37,7 +37,7 @@
   mono_font       = "Roboto  Mono" # Default is System font
 
     [params.footer]
-        copyright = "© :YEAR: AXIS Lab. Built with [**Lotus Docs**](https://github.com/colinwilson/lotusdocs)"
+        copyright = "© :YEAR: D.C. Kim. Built with [**Lotus Docs**](https://github.com/colinwilson/lotusdocs)"
         version = true # includes git commit info
 
     [params.social]

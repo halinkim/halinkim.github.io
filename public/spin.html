@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>sc</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+body {
+	margin: 0;
+	background-color: #000;
+	color: #fff;
+	font-family: Monospace;
+	font-size: 13px;
+	line-height: 24px;
+	overscroll-behavior: none;
+}
+
+a {
+	color: #ff0;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+#info {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	z-index: 1; /* TODO Solve this in HTML */
+}
+
+a, button, input, select {
+	pointer-events: auto;
+}
+
+.lil-gui {
+	z-index: 2 !important; /* TODO Solve this in HTML */
+}
+
+@media all and ( max-width: 640px ) {
+	.lil-gui.root { 
+		right: auto;
+		top: auto;
+		max-height: 50%;
+		max-width: 80%;
+		bottom: 0;
+		left: 0;
+	}
+}
+
+#overlay {
+	position: absolute;
+	font-size: 16px;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(0,0,0,0.7);
+}
+
+	#overlay button {
+		background: transparent;
+		border: 0;
+		border: 1px solid rgb(255, 255, 255);
+		border-radius: 4px;
+		color: #ffffff;
+		padding: 12px 18px;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+#notSupported {
+	width: 50%;
+	margin: auto;
+	background-color: #f00;
+	margin-top: 20px;
+	padding: 10px;
+}
+		</style>
+
+	</head>
+	<body>
+
+		<!-- Import maps polyfill -->
+		<!-- Remove this when import maps will be widely supported -->
+        <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+		<script type="importmap">
+			{
+                "imports": {
+                    "three": "https://unpkg.com/three@0.142.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.142.0/examples/jsm/"
+
+                  }
+			}
+		</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
+		<script type="module">
+
+			import * as THREE from 'three';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { OutlineEffect } from 'three/addons/effects/OutlineEffect.js';
+			import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+
+			const gui = new dat.GUI();
+
+			let container, stats;
+
+			let camera, scene, renderer, effect;
+			let particleLight, mesh3;
+
+			let timer0 = Date.now() * 0.00025;
+			let theta = 0, phi = 0;
+
+
+			const ws = {
+				w0: 1.0,
+				w1: 0.1
+			}
+			gui.add(ws, 'w0').min(0).max(10).step(0.5);
+			gui.add(ws, 'w1').min(0).max(10).step(0.1);
+
+			
+			let tube;
+            init();
+            animate();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+                const aspect = window.innerWidth / window.innerHeight;
+                const depth = 1200;
+                const fov_y = 40;
+                const height_ortho = depth * 2 * Math.atan( fov_y*(Math.PI/180) / 2 )
+                const width_ortho  = height_ortho * aspect;
+                
+                // camera = new THREE.OrthographicCamera(width_ortho  / -2, width_ortho   /  2, height_ortho /  2, height_ortho  / -2, 1, 2500 );
+				camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000);
+
+				camera.position.set( 0.0, 100, 200 );
+
+				//
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x444488 );
+
+				//
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+
+				// Materials
+
+				const cubeWidth = 400;
+				const numberOfSphersPerSide = 6;
+				const sphereRadius = ( cubeWidth / numberOfSphersPerSide ) * 0.8 * 0.5 * 0.2;
+				const stepSize = 1.0 / numberOfSphersPerSide;
+				const format = ( renderer.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat;
+
+				const geometry = new THREE.SphereGeometry( 100, 20, 16 );
+				const material = new THREE.MeshBasicMaterial();
+				const geometry2 = new THREE.SphereGeometry( 1, 20, 16 );
+				const material2 = new THREE.MeshBasicMaterial();
+				material.wireframe = true;
+				material.transparent = true
+				material.opacity = 0.5
+				material2.color = new THREE.Color(0xff0000);
+				const mesh = new THREE.Mesh( geometry, material );
+				const mesh2 = new THREE.Mesh( geometry2, material2 );
+				mesh3 = new THREE.Mesh( geometry2, material2 );
+
+				scene.add( mesh );
+				scene.add(mesh2);
+				scene.add(mesh3);
+
+
+				const geometryTube = new THREE.CylinderGeometry(0.5, 0.5, 100, 10);
+				const materialTube = new THREE.MeshToonMaterial({color: new THREE.Color(0xBB2200)});
+
+				tube = new THREE.Mesh( geometryTube, materialTube );
+				scene.add( tube );
+
+
+				const axesHelper = new THREE.AxesHelper( 20 );
+				scene.add( axesHelper );
+
+				particleLight = new THREE.Mesh(
+					new THREE.SphereGeometry( 0, 0, 0 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+				);
+				scene.add( particleLight );
+
+				// Lights
+
+				scene.add( new THREE.AmbientLight( 0x888888 ) );
+
+				const pointLight = new THREE.PointLight( 0xffffff, 2, 800 );
+				particleLight.add( pointLight );
+
+				//
+
+				effect = new OutlineEffect( renderer );
+
+
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 200;
+				controls.maxDistance = 300;
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+
+			}
+
+			function render() {
+
+				const timer = Date.now() * 0.00025;
+				const dt = timer - timer0;
+				timer0 = timer;
+
+				theta += ws.w1 * dt;
+				phi += 2 * ws.w0 * dt;
+
+				const xs = 100 * Math.sin(theta) * Math.sin(phi);
+				const ys = 100 * Math.cos(theta);
+				const zs = 100 * Math.sin(theta) * Math.cos(phi);
+
+				mesh3.position.x = xs;
+				mesh3.position.z = zs;
+				mesh3.position.y = ys;
+
+
+				tube.position.x = xs / 2;
+				tube.position.z = zs / 2;
+				tube.position.y = ys / 2;
+
+				tube.rotation.y = phi + Math.PI / 2;
+				tube.rotation.z = theta;
+
+				renderer.render(scene, camera);
+
+			}
+
+
+
+		</script>
+
+	</body>
+</html>

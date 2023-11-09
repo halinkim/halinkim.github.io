@@ -1,13 +1,12 @@
 +++
 weight = 1
 date = "2023-10-30"
-draft = false
+draft = true
 author = "D.C.Kim"
 title = "Intro"
 icon = "info"
 toc = true
 description = ""
-draft = true
 +++
 
 

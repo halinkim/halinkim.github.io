@@ -13,7 +13,7 @@
 
 <html lang="ko-kr"><head>
     <meta charset="utf-8" />
-    <title>About | DcKim</title>
+    <title>Intro | DcKim</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A Modern Documentation Theme for Hugo" />
     <meta name="keywords" content="Documentation, Hugo, Hugo Theme, Bootstrap" />
@@ -106,7 +106,7 @@
                 
                     
                         
-                        <li class="current">
+                        <li class="">
                             <a class="sidebar-root-link" href="http://dckim.kr/docs/about/">
                                 <i class="material-icons me-2">info</i>
                                 
@@ -117,17 +117,17 @@
                 
                     
                     
-                        <li class="sidebar-dropdown  ">
+                        <li class="sidebar-dropdown  current active">
                             <button class="btn">
                                 <i class="material-icons me-2">info</i>
                                 Post-Newtonian
                             </button>
-                            <div class="sidebar-submenu ">
+                            <div class="sidebar-submenu d-block">
                                 <ul>
                                     
                                         
                                         
-                                            <li class=" "><a class="sidebar-nested-link" href="http://dckim.kr/docs/postnewtonian/intro/">Intro</a></li>
+                                            <li class="current "><a class="sidebar-nested-link" href="http://dckim.kr/docs/postnewtonian/intro/">Intro</a></li>
                                         
                                     
                                 </ul>
@@ -240,10 +240,18 @@
                     <meta itemprop="position" content='1' />
                 </li>
             
+            
+                <li class="breadcrumb-item text-capitalize" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a itemprop="item" href="/docs/postnewtonian/">
+                        <span itemprop="name">Post-Newtonian</span>
+                    </a>
+                    <meta itemprop="position" content='2' />
+                </li>
+            
         
             <li class="breadcrumb-item text-capitalize active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                <span itemprop="name">About</span>
-                <meta itemprop="position" content='2' />
+                <span itemprop="name">Intro</span>
+                <meta itemprop="position" content='3' />
             </li>
         
     </ul>
@@ -251,33 +259,25 @@
                                 
                                 <div class="row flex-xl-nowrap">
                                     
-                                    <div class="docs-toc col-xl-3    d-xl-block"><toc>
+                                    <div class="docs-toc col-xl-3  visually-hidden  d-xl-block"><toc>
     <div class="fw-bold text-uppercase mb-2">On this page</div>
-    <nav id="toc">
-  <ul>
-    <li><a href="#history">History</a></li>
-  </ul>
-</nav>
+    <nav id="toc"></nav>
     </toc></div>
                                     
                                     
-                                    <div class="docs-toc-mobile    d-print-none d-xl-none">
+                                    <div class="docs-toc-mobile  visually-hidden  d-print-none d-xl-none">
                                         <button id="toc-dropdown-btn" class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-offset="0,0" aria-expanded="false">
                                             Contents
                                         </button>
-<nav id="toc-mobile">
-  <ul class="dropdown-menu">
-    <li><a href="#history">History</a></li>
-  </ul>
-</nav></div>
-                                    <div class="docs-content col-12 col-xl-9 mt-0">
+<nav id="toc-mobile"></nav></div>
+                                    <div class="docs-content col-12  mt-0">
                                         <div class="mb-3">
                                             <h1 class="content-title mb-0">
                                                 
                                                     <i class="material-icons me-0">info</i>
                                                 
                                                 <span class="title-text">
-                                                    About
+                                                    Intro
                                                 </span>
                                                 
                                             </h1>
@@ -289,9 +289,9 @@
                                             
     
     <div data-prismjs-copy="" data-prismjs-copy-success="" data-prismjs-copy-error="">
-        <h2 id="history">History <a href="#history" class="anchor" aria-hidden="true"><i class="material-icons align-middle">link</i></a></h2><ul>
-<li>2023.09.23 : 랜딩 페이지가 만들어졌어요!</li>
-</ul>
+        <p>Post-Newtonian 근사는 아인슈타인의 장방정식의 해를 찾는 방법 중 하나입니다. 이것은 Newtonian 해에서부터 출발하여 각 반복마다 이전 항보다 $v^2$만큼이 곱해진 항이 추가되며 테일러 급수처럼 전개됩니다. 컴퓨터 자원을 이용하여 수치적으로 계산하는 numerical relativity와 달리 post-Newtonian 근사는 해석적이지만 높은 정확도를 얻기 위해 충분히 많은 항과 수렴도를 보여야 합니다.</p>
+<p>Post-Newtonian 근사는 두 블랙홀이 아주 가까운 거리에서 병합되기 직전 등과 같이 강한 장에서 부정확해집니다. 이러한 상황에서는 numerical relativity를 통한 정확한 계산이 필요합니다. 하지만 충분한 거리만큼 떨어져 천천히 운동하며 조력에 의한 변형이 작은 경우 post-Newtonian 근사는 상황을 보다 정확하게 설명합니다. 때문에 이러한 영역에서 numerical relativity의 결과와 비교함으로써 수치 알고리즘의 정확도를 판단할 수 있으며, 수치 계산에 필요한 초기 데이터를 구성하는 데 쓰일 수도 있습니다.</p>
+<p>각 반복은 이전에 비해 $1/c^2$ 만큼의 정확도를 추가합니다. 따라서 $n$번째 전개식은 최대 $1/c^{2n}$의 항까지 포함합니다. 예를 들어 &ldquo;3PN&quot;은 $1/c^6$ 까지의 항을 포함합니다. 중력파 광도와 같은 경우, 보정항이 $1/c^5$에서 처음의 보정항이 나타나게 됩니다. 이 경우는 2.5PN에 해당합니다.</p>
 
     </div>
 
@@ -300,13 +300,13 @@
                                         <div><hr class="doc-hr">
 <div id="doc-nav" class="d-print-none">
 
-	<div class="row flex-xl-nowrap ">
-	<div class="col-sm-6 pt-2 doc-next">
-		<a href="/docs/postnewtonian/intro/">
-			<div class="card h-100 my-1">
+	<div class="row flex-xl-nowrap flex-row-reverse">
+	<div class="col-sm-6 pt-2 doc-prev">
+		<a class="ms-auto" href="/docs/about/">
+			<div class="card h-100 my-1 text-end">
 				<div class="card-body py-2">
-                    <p class="card-title fs-5 fw-semibold lh-base mb-0"><i class="material-icons align-middle">navigate_before</i> Intro</p>
-					<p class="card-text ms-2"></p>
+                    <p class="card-title fs-5 fw-semibold lh-base mb-0">About <i class="material-icons align-middle">navigate_next</i></p>
+					<p class="card-text me-2"></p>
 					
 				</div>
 			</div>

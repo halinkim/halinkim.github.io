@@ -19327,4 +19327,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }]
   });
 });
+var remainTime = document.querySelector("#remain-time");
+function diffDay() {
+  var masTime = new Date("2023-11-10T23:55:00");
+  var todayTime = new Date();
+  var diff = masTime - todayTime;
+  var diffHour = Math.floor(diff / (1000 * 60 * 60) % 24);
+  var diffMin = Math.floor(diff / (1000 * 60) % 60);
+  var diffSec = Math.floor(diff / 1000 % 60);
+  remainTime.innerText = "\uAC8C\uC784 \uC885\uB8CC\uAE4C\uC9C0 ... ".concat(diffHour, "\uC2DC\uAC04 ").concat(diffMin, "\uBD84 ").concat(diffSec, "\uCD08");
+}
+diffDay();
+setInterval(diffDay, 1000);
 },{"katex/dist/contrib/auto-render.js":"coRf"}]},{},["mpVp"], null)

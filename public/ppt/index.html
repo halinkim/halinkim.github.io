@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/dckwhite.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/github.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2> N<span style="color:orangered">Puncture</span>Solver</h2>
+					<small>Dongchan Kim</small>
+				</section>
+
+				<section>
+					<section>
+						<h2> What is it?</h2>
+						<ul>
+							<li> It is solver for constraint equations in 3+1 decomposition.</li>
+							<ul class="fragment">
+								<li> $R + K^2 - K^{ij}K_{ij} = 16\pi \rho$</li>
+								<li> $D_j(K^{ij} - \gamma^{ij}K) = 8\pi j^i$</li>
+							</ul>
+							<li class="fragment"> It uses conformal transverse-traceless (CTT) decomposition and Bowen-York solutions. </li>
+						</ul>
+					</section>
+					<section>
+						<h2> CTT decomposition</h2>
+						<ul>
+							<li> Conformal spatial metric. [<a href="http://www.numdam.org/item/JMPA_1944_9_23__37_0.pdf">Lichnerowicz (1944)</a>, <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.26.1656">York, Jr. (1971)</a>]</li>
+							<ul>
+								<li> $\gamma_{ij} = \psi^4 \bar{\gamma}_{ij}$</li>
+							</ul>
+							<li> Split extrinsic curvature.</li>
+							<ul>
+								<li> $K_{ij} = A_{ij} + \frac{1}{3}\gamma_{ij}K$</li>
+								<li> $A_{ij} = \psi^{-2}\bar{A}_{ij}$</li>
+							</ul>
+							<li> Decompose $\bar{A}^{ij}$ into transverse part and longitudinal part.</li>
+							<ul>
+								<li> $\bar{A}^{ij} = \bar{A}^{ij}_{TT} + \bar{A}^{ij}_{L}$ </li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h2> Bowen-York solutions</h2>
+						<ul>
+							<li> By assumming vacuum, conformal flatness, maximal slicing, the two constraint equations now become</li>
+							<ul>
+								<li> $\bar{D}_jA^{ij} = \bar{D}_jA^{ij}_L \equiv (\bar{\Delta}_LW)^i = 0 \to \partial^j\partial_j W^i + \frac{1}{3}\partial_i\partial_j W^j = 0$</li>
+								<li> $\bar{D}^2\psi + \frac{1}{8}\psi^{-7}\bar{A}^L_{ij}\bar{A}^{ij}_L = 0$</li>
+							</ul>
+							<li> We should find $A^{ij}_{L}$ fisrt, and then solve second equation to get $\psi$.</li>
+							<li> First equation was solved by [<a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.21.2047">Bowen, York (1980)</a>] for multiple black holes have linear momentum and spin explicitly.</li> 
+						</ul>
+					</section>
+					<section>
+						<h2> Puncture method</h2>
+						<ul>
+							<li> Write $\psi$ as a sum of absorbs singular terms and correction term. [<a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.78.3606">Brandt (1997)</a>]</li>
+							<ul>
+								<li> $\psi = 1 + \frac{1}{\alpha} + u$</li>
+								<li> $\frac{1}{\alpha} = \sum_{n}\frac{\mathcal{M}_n}{2s_n}$</li>
+							</ul>
+							<li> Now we obtain an equation for $u$, which is a nonlinear elliptic PDE.</li>
+							<ul>
+								<li> $\bar{D}^2u = -\beta (\alpha + \alpha u + 1)^{-7}$</li>
+								<li> $\beta \equiv \frac{1}{8}\alpha^7 \bar{A}^L_{ij}\bar{A}^{ij}_L$</li>
+							</ul>
+						</ul>
+					</section>
+				</section>
+				
+
+				<section>
+					<section>
+						<h2> TwoPunctures</h2>
+						<ul>
+							<li> A great initial data solver for two punctures. [<a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.70.064011">Ansorg (2004)</a>, <a href="https://arxiv.org/abs/1304.1805">Paschalidis (2013)</a>]</li>
+							<li> It uses pseudospectral method which needs $C^\infty$ differentiable.</li>
+							<li> The problem that $u$ is $C^2$ differentiable at the punctures was solved by appropriate transformation, so this method converges rapidly to highly accurate solutions.</li>
+						</ul>
+					</section>
+					<section>
+						<h2> Briefly introduction to spectral methods</h2>
+						<ul>
+							<li> Approximate the solution $u(x)$ as series of basis functions $T_k(x)$.</li>
+							<ul>
+								<li>$u(x) \approx u^{(N)}(x) = \sum_{k=0}^{N}\tilde{u}_kT_k(x)$</li>
+							</ul>
+							<li> We can express derivatives of $u^{(N)}(x)$ analytically.</li>
+							<ul>
+								<li>$\partial_x u^{(N)}(x) = \sum_{k=0}^{N}\tilde{u}_k \partial_x T_k(x)$</li>
+							</ul>
+							<li> Choose appropriate $N+1$ points and evaluate source term.</li>
+							<li> Using properties of basis function to get operator matrix and solve it.</li>
+							<ul>
+								<li> When the solution is periodic, the basis function can be Fourier series,</li>
+								<li> otherwise Chebychev polynomials.</li>
+							</ul>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2> How to solve <span style="color: orangered;">nonlinear</span> elliptic partial differential equations?</h2>
+						<ul>
+							<li> Generally, we can solve linear PDEs at each iteration. </li>
+							<li> So we should choose initial guess of solution, and then iteratively solve for residual.</li>
+						</ul>
+					</section>
+					<section>
+						<h3> Linear to nonlinear</h3>
+						<ul>
+							<li> For example, given nonlinear PDE</li>
+							<ul>
+								<li> $\nabla^2f = f^ng$,</li>
+								<li> and we have solution after $N$ iteration steps as $f^N$.</li>
+							</ul>
+							<li> For the next iteration, we should have $f^{N+1}= f^N + \delta f$. </li>
+							<ul>
+								<li>$\nabla^2 f^{N+1} = \nabla^2 (f^N + \delta f) = (f^{N+1})^ng \approx g(f^N)^n + ng(f^N)^{n-1}\delta f + \mathcal{O}(g\delta f^2)$</li>
+								<li>$\nabla^2 \delta f - ng(f^N)^{n-1}\delta f = (f^N)^ng - \nabla^2 \delta f \equiv - \mathcal{R}^N$</li>
+							</ul>
+							<li> Which is of the form 
+								$$
+							\nabla^2 f + uf = s
+							$$</li>
+						</ul>
+						
+					</section>
+	
+					
+	
+					
+				</section>
+
+				<section>
+					<section>
+						<h2> 3D Finite Difference Methods</h2>
+						<ul>
+							<li> There are $(N+1)^3$ grid points.</li>
+							<li> We can write 1D second derivative of $f$ as </li>
+							
+							$$(\partial_x^2f)_i = \frac{f_{i + 1} - 2 f_i + f_{i - 1}}{(\Delta x)^2} + \mathcal{O}(\Delta x^2)$$
+							
+							<li> For 3D, $(1\le i,j,k \le N)$
+							$$
+							\nabla^2 f_{ijk} = \frac{f_{i+1,j,k} + f_{i-1,j,k} + f_{i,j+1,k} + f_{i, j-1,k} + f_{i,j,k+1} + f_{i, j, k - 1} - 6 f_{ijk}}{\Delta^2} 
+							$$
+							</li>
+	
+						</ul>
+					</section>
+					<section>
+						<h2> Boundary conditions</h2>
+						<ul>
+							<li> Physically, $u \to 0$ as $r\to \infty$.  </li>
+							<li> But in finite grid, we cannot set infinity boundary conditions.</li>
+							<li> Instead, we can use Robin boundary conditions.</li>
+							<ul>
+								<li> $u + r \partial_r u = 0$</li>
+								<li> $\Rightarrow ru=\mathrm{const.}$ at boundary.</li>
+							</ul>
+						</ul>
+					</section>
+	
+					<section>
+						<h2> Full equations</h2>
+						<ul>
+							<li> Integrate inner and boundary points, we get $(N+1)^3$ equations.</li>
+							<ul>
+								<li> For inner, $$f_{i+1,j,k} + f_{i-1,j,k} + f_{i,j+1,k} + f_{i, j-1,k} + f_{i,j,k+1} + f_{i, j, k - 1} + (\Delta^2 g_{ijk}-6) f_{ijk} = \Delta^2 s_{ijk}$$ </li>
+								<li> For boundary, $r_{ijk}f_{ijk} - r_{i,j,k+1}f_{i,j,k+1} = 0$ when $k=0$, etc.</li>
+							</ul>
+						
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2> 3D to 1D</h2>
+						<ul>
+							<li> For each $i,j,k$, we can map this indices to single index.</li>
+							<ul>
+								<li> $I = i + (N + 1)j + (N+1)^2 k$</li>
+							</ul>
+							<li> By this, we can treat $f$, $s$ as 1D vectors.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h2> Matrix form</h2>
+						<ul>
+							<li> We can write these equations into matrix form.</li>
+							<ul>
+								<li> $\bm{A}\vec{f} = \vec{s}$</li>
+							</ul>
+							$$
+							\bm{A} = \begin{pmatrix}
+							r_{000} & -r_{001} &  & & & & & & & &\\
+							1 & \Delta^2 g_{001}-6 & 1 & & & & & & & &\\
+							  & \ddots & \ddots & \ddots & & & & & & &\\
+							  1 & \cdots & 1 & \cdots &1 & \Delta^2 g_{ijk} - 6& 1& \cdots& 1& \cdots & 1\\
+							  \ddots & & \ddots & & \ddots & \ddots & \ddots & & \ddots & & \ddots 
+							\end{pmatrix}
+							$$
+							
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li> There are 7 stripe in matrix.</li>
+							<img src="7band.png" alt="7band" width="40%">
+							<li> Size of matrix is $N^3$ by $N^3$. So only about $\frac{7\times N^3}{N^6} = \frac{7}{N^3}$ elements are non-zero.</li>
+					
+						</ul>
+						
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2> Find the solution </h2>
+						<ul>
+							<li> Now we should find $\vec{f} = \bm{A}^{-1}\vec{s}$.</li>
+							<li> If we use Gauss-Jordan elimination, it takes $\mathcal{O}((N^3)^3) = \mathcal{O}(N^9)$.</li>
+							<ul>
+								<li> For $N=10$, order of $N^9=10^9 = 10 \mathrm{s}$.</li>
+							</ul>
+							<li> If we use sparse property which its band size is $N^2$, it takes $\mathcal{O}(N^3N^4) = \mathcal{O}(N^7)$.</li>
+							<ul>
+								<li> For $N=20$, order of $20^7\approx 13\mathrm{s}$.</li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h2> Find $\vec{f}$ directly</h2>
+						<ul>
+							<li> So we should find $\vec{f}$, instead of $\bm{A}^{-1}$.</li>
+							<li> There are many methods to find linear solver.</li>
+						</ul>
+					</section>
+	
+					<section>
+						<h2> Now we can choose... </h2>
+						<ul>
+							<li> Successive over relaxation (SOR) </li>
+							<li class="fragment highlight-red"> Multigrid </li>
+							<li> Spectral method </li>
+							<li class="fragment highlight-red"> Conjugate gradient (CG) </li>
+						</ul>
+					</section>
+	
+					<section>
+						<h2> Biconjugate gradient stabilized method</h2>
+						<ul>
+							<li> It is iterative method for the numerical solution of nonsymmetric linear systems. [<a href="https://epubs.siam.org/doi/10.1137/0913035">Vorst (1992)</a>]</li>
+							<li> It contains dot product of two vectors and matrix multiplication of $\bm{A}$ and some vectors.</li>
+							<li> It takes only $\mathcal{O}(N^3)$ per each iteration.</li>
+							<li> We can iterate until it reaches enough residual.</li>
+							<li> We should solve a new equation at each linear solving step. However, as we progress through more linear solving steps, the residual quickly approaches zero.</li>
+						</ul>
+					</section>
+	
+					<section>
+						
+						<h3> Implement</h3>
+						<pre class="cpp"><code data-trim data-noescape data-line-numbers="1-2|4-7|8-11|13-14|15-18|19-21|23-24|25-27|">
+							sparse_product(A, A_ind, p0, v, N3);
+							a = rho_0 / inner_product(rh, v, N3);
+	
+							for (int i = 0; i < N3; ++i) {
+								h[i] = sol_1d[i] + a * p0[i];
+								s[i] = r[i] - a * v[i];
+							}
+							if (norm2(s, N3) < tol) {
+								copy_array(sol_1d, h, N3);
+								break;
+							}
+	
+							sparse_product(A, A_ind, s, t, N3);
+							omega = inner_product(t, s, N3) / inner_product(t, t, N3);
+							for (int i = 0; i < N3; ++i) {
+								sol_1d[i] = h[i] + omega * s[i];
+								r[i] = s[i] - omega * t[i];
+							}
+							if (norm2(r, N3) < tol) {
+								break;
+							}
+	
+							rho_1 = inner_product(rh, r, N3);
+							b = (rho_1 / rho_0) * (a / omega);
+							for (int i = 0; i < N3; ++i) {
+								p0[i] = r[i] + b * (p0[i] - omega * v[i]);
+							}
+							rho_0 = rho_1;
+						</code></pre>
+					</section>
+				</section>
+				
+				
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				katex: {
+    version: 'latest',
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '\\[', right: '\\]', display: true}
+   ],
+   ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+ },
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+			});
+		</script>
+	</body>
+</html>

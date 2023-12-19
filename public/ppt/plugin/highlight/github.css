@@ -8,10 +8,15 @@
   Outdated base version: https://github.com/primer/github-syntax-light
   Current colors taken from GitHub's CSS
 */
+/* @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap'); */
+@import url('https://fonts.cdnfonts.com/css/cascadia-code');
 
 .hljs {
   color: #24292e;
   background: #ffffff;
+  font-family: 'Cascadia Code', monospace !important;;
 }
 
 .hljs-doctag,

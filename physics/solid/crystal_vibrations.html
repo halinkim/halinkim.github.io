@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Vibrations</title>
+    <link rel="stylesheet" href="/style.e308ff8e.css">
+    <link rel="stylesheet" href="/katex.min.a6217589.css">
+    <link rel="stylesheet" href="/prism-lotus.aac56dc6.css">
+    <link rel="stylesheet" href="/prism-toolbar.832eaf64.css">
+    <link rel="stylesheet" href="/prism-line-numbers.ef2d63b4.css">
+    <link rel="stylesheet" href="/prism-line-highlight.60aee938.css">
+    
+    <!-- <link rel="stylesheet" href="../node_modules/mathbox/build/mathbox.css"> -->
+</head>
+<body>
+<section>
+
+    <h1> Crystal Vibrations </h1>
+    다양한 고체 물리학 교재, 예를 들어 <a href="https://www.wiley.com/en-ie/Kittel's+Introduction+to+Solid+State+Physics,+8th+Edition,+Global+Edition-p-9781119454168">Kittel</a> 4장, 
+    <a href="https://podcasts.ox.ac.uk/series/oxford-solid-state-basics">Simon</a> 9장에서는 1차원상에서 동일한 단원자들이 용수철로 연결되어 있는 단순한 모형으로부터 출발해 크리스탈 진동을 이해합니다.
+    모델은 다음과 같습니다.
+    <ul>
+        <li> 1차원상에서 질량이 $m$으로 동일한 원자들이 용수철 상수가 $\kappa$인 용수철로 인접한 원자들과 연결되어 있습니다.</li>
+        <li> 평형 상태에서 이웃한 두 원자 사이의 거리는 $a$입니다.</li>
+        <li> 각각의 원자들의 평형 위치로부터의 변위를 $u_n$라 합니다. 각각의 원자는 정수 $n$로 인덱싱 되어 있습니다.</li>
+    </ul>
+    이제 용수철에 의해 원자 $n$에 작용하는 힘을 다음과 같이 나타낼 수 있습니다:
+    $$
+    \begin{aligned}
+    F_n &= \kappa (u_{n+1} - u_n) + \kappa (u_{n - 1} - u_n)\\
+    M\frac{d^2u_n}{dt^2}&= \kappa (u_{n + 1} + u_{n - 1} - 2u_n).
+    \end{aligned}
+    $$
+
+    모든 진동하는 원자들이 같은 진동수 $\omega$, 파수<sup>wavenumber</sup> $K$, 진폭 $A$를 가지는 파동 해를 가정하면
+    $$
+    u_n = Ae^{-i\omega t}e^{iKan}
+    $$
+    와 같이 쓸 수 있습니다. 이를 위의 운동 방정식에 다시 대입하여 $\omega^2$에 대해 정리하면 다음과 같습니다:
+    $$
+    \begin{aligned}
+    \omega^2 =& \frac{2\kappa}{m}(1 - \cos Ka)\\
+    =& \frac{4\kappa}{m}\sin^2 \frac{Ka}{2}.
+    \end{aligned}
+    $$
+    따라서
+    $$
+    \omega = \sqrt{\frac{2\kappa}{m}}\left| \sin \frac{Ka}{2} \right|
+    $$
+    이고, $K \to K + \frac{2\pi}{a}$에 대한 주기성을 갖습니다.
+
+    <h2> First Brillouin Zone</h2>
+    $K$가 물리적으로 유의미한 범위는
+    $$
+    -\frac{\pi}{a} < K \le \frac{\pi}{a}
+    $$
+    입니다. 이를 1차 브릴루앙 영역<sup>first Brillouin zone</sup>이라 합니다. 이 범위 밖의 $K' = K + 2\pi m / a$을 가정해봅시다. 즉 $K'$은 범위 내의 $K$에 대해 $2\pi / a$의 정수 $m$배 만큼 떨어져 있습니다.
+    $$
+    \begin{aligned}
+    u_n &= Ae^{-i\omega t}e^{iK'an}\\
+    &= Ae^{-i\omega t} e^{i(K + 2\pi m / a)an}\\
+    &= Ae^{-i\omega t} e^{iKan}e^{2\pi i m n}\\
+    &= Ae^{-i\omega t} e^{iKan}
+    \end{aligned}
+    $$
+    이므로 $K$일 때와 같은 해를 가집니다.
+    <hr>
+    한편 영역의 경계에 해당하는 $K = \pm \pi / a$은 정상파를 나타냅니다:
+    $$
+    \begin{aligned}
+    u_n &= Ae^{-i\omega t}e^{iKan}\\
+    &= Ae^{-i\omega t}e^{\pm i\pi n}\\
+    &= Ae^{-i\omega t} (-1)^n.
+    \end{aligned}
+    $$
+    
+    <h2> Interactive </h2>
+    
+    아래 슬라이더 바를 조절하여 $K$의 값을 $-\frac{\pi}{a}\le K\le \frac{\pi}{a}$로 조절할 수 있습니다.
+    그래프의 빨간선, 파란선, 초록선은 각각 $K$, $K + \frac{2\pi}{a}$, $K - \frac{2\pi}{a}$를 나타냅니다.
+    그래프의 검정색 점은 각각 원자의 변위 $u_n$을 나타냅니다.
+    각 원자의 위치에서 $K + 2\pi m / a$가 나타내는 변위 $u_n$이 모두 동일함을 확인할 수 있습니다.
+    경계에서의 정상파도 확인해보세요.
+    <div class="slidecontainer">
+        <p id="nowK">$K=0.5{\pi}/{a}$</p>
+        <input type="range" min="-20" max="20" value="10" class="slider" id="myRange">
+      </div>
+    <div id="mathbox-container"></div>
+
+
+
+</section>
+
+
+
+
+    <div id="copyright" data-scroll-section="">
+        Copyright 2023ⓒ D.C. Kim. All Rights Reserved.<br>
+    </div>
+
+
+
+<script src="/katex.min.74ff908d.js"></script>
+<script src="/prism-core.5193c4ea.js"></script>
+<script src="/prism-line-numbers.88920a2b.js"></script>
+<script src="/prism-toolbar.bdd58ac6.js"></script>
+<script src="/prism-copy-to-clipboard.0659b140.js"></script>
+<script src="/prism-line-highlight.f9b729ab.js"></script>
+<script src="/prism-python.9617f793.js"></script>
+<script src="/katex.78caeac6.js"></script>
+<script src="/waves.6e2ee596.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snippets</title>
+    <link rel="stylesheet" href="/style.e308ff8e.css">
+    <link rel="stylesheet" href="/katex.min.a6217589.css">
+    <link rel="stylesheet" href="/prism-lotus.aac56dc6.css">
+    <link rel="stylesheet" href="/prism-toolbar.832eaf64.css">
+    <link rel="stylesheet" href="/prism-line-numbers.ef2d63b4.css">
+    <link rel="stylesheet" href="/prism-line-highlight.60aee938.css">
+    
+    <!-- <link rel="stylesheet" href="../node_modules/mathbox/build/mathbox.css"> -->
+</head>
+<body>
+<section>
+
+    <h1> Snippets For Python</h1>
+
+    <h2> Data Structures </h2>
+
+    <h3> Segment Tree </h3>
+
+    <pre class="line-numbers" data-line=""><code class="language-py">class Seg:
+    def __init__(self, size, T):
+        import math
+        self.size = size
+        self.h = math.ceil(math.log2(size + 1)) + 1
+        self.seg = [0] * (1 << self.h)
+        self.seg_zero = 1 << (self.h - 1)
+        self.T = T
+    
+    def update(self, ind, val):
+        ind += self.seg_zero
+        self.seg[ind] = val
+        while ind > 1:
+            ind >>= 1
+            l = r = ind << 1
+            r += 1
+            self.seg[ind] = self.T(self.seg[l], self.seg[r])
+
+    def query(self, l, r):
+        l += self.seg_zero
+        r += self.seg_zero
+        ans = 0
+        while l &lt;= r:
+            cover = l
+            dep = 1
+            while l % 2 == 0 and cover + (1 << (dep - 1)) &lt;= r:
+                l //= 2
+                cover += 1 << (dep - 1)
+                dep += 1
+            ans = self.T(ans, self.seg[l])
+            l = cover + 1
+        return ans</code></pre>
+
+    <h3> Disjoint Set, Union find</h3>
+
+    <pre class="line-numbers" data-line=""><code class="language-py">class DSU:
+    def __init__(self, N):
+        self.rank = [1] * (N + 1)
+        self.dsu = [_ for _ in range(N + 1)]
+    
+    def find(self, child):
+        if self.dsu[child] == child:
+            return child
+        else:
+            r = self.find(self.dsu[child])
+            self.dsu[child] = r
+            return self.dsu[child]
+
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
+        if x == y:
+            return
+        if self.rank[x] > self.rank[y]:
+            self.dsu[y] = x
+            self.rank[x] += self.rank[y]
+        else:
+            self.dsu[x] = y
+            self.rank[y] += self.rank[x]</code></pre>
+    
+    <h2> Math </h2>
+    <h3> Matrix Operation </h3>
+    <pre class="line-numbers" data-line=""><code class="language-py">class MatrixOP:
+    def mul(self, a, b, MOD):
+        N = len(a)
+        return [[sum(a[i][k] * b[k][j] % MOD for k in range(N)) % MOD for j in range(N)] for i in range(N)]
+
+    def diag(self, N):
+        B = [[0] * N for _ in range(N)]
+        for i in range(N):
+            B[i][i] = 1
+        return B
+
+    def matpow(self, A, T, MOD):
+        B = self.diag(len(A))
+        while T:
+            if T % 2:
+                B = self.mul(A, B, MOD)
+                T -= 1
+            A = self.mul(A, A, MOD)
+            T //= 2
+        return B</code></pre>
+
+
+</section>
+
+
+
+
+    <div id="copyright" data-scroll-section="">
+        Copyright 2023ⓒ D.C. Kim. All Rights Reserved.<br>
+    </div>
+
+
+
+<script src="/katex.min.74ff908d.js"></script>
+<script src="/prism-core.5193c4ea.js"></script>
+<script src="/prism-line-numbers.88920a2b.js"></script>
+<script src="/prism-toolbar.bdd58ac6.js"></script>
+<script src="/prism-copy-to-clipboard.0659b140.js"></script>
+<script src="/prism-line-highlight.f9b729ab.js"></script>
+<script src="/prism-python.9617f793.js"></script>
+<script src="/katex.78caeac6.js"></script>
+</body>
+</html>

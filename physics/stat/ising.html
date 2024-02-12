@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ising Model</title>
+    <link rel="stylesheet" href="/style.e308ff8e.css">
+    <link rel="stylesheet" href="/katex.min.a6217589.css">
+    <link rel="stylesheet" href="/prism-lotus.aac56dc6.css">
+    <link rel="stylesheet" href="/prism-toolbar.832eaf64.css">
+    <link rel="stylesheet" href="/prism-line-numbers.ef2d63b4.css">
+    <link rel="stylesheet" href="/prism-line-highlight.60aee938.css">
+    
+    <!-- <link rel="stylesheet" href="../node_modules/mathbox/build/mathbox.css"> -->
+</head>
+<body>
+<section>
+
+    <h1> Ising Model </h1>
+
+    Rust를 이용하여 상호작용 가능한 Ising 모델을 작성할 수 있습니다.
+    <a href="https://crates.io/crates/nannou">nannou</a>를 사용하여 모델을 그리고, <a href="https://crates.io/crates/nannou_egui">nannou_egui</a>를 사용하여 상호작용할 수 있는 GUI를 만듭니다.
+
+    <img src="/ising_ex_1.cc163e63.png" width="100%">
+    <video src="/ising_ex.56937c50.mp4" muted="" controls="" playsinline="" loop="" width="100%"></video>
+    <pre class="line-numbers" data-line=""><code class="language-rust">use nannou::prelude::*;
+use nannou_egui::{egui, Egui};
+use rand::prelude::*;
+
+fn main() {
+    nannou::app(model)
+        .update(update)
+        .run();
+}</code></pre>
+
+<pre class="line-numbers" data-line=""><code class="language-rust">struct Model {
+    n: usize,
+    temp: f64,
+    iter: i32,
+    board: Vec<bool>,
+    egui: Egui
+}</bool></code></pre>
+
+<pre class="line-numbers" data-line=""><code class="language-rust">fn model(app: &App) -> Model {
+    let window_id = app.new_window()
+        .size(900, 600)
+        .raw_event(raw_window_event)
+        .view(view)
+        .build()
+        .unwrap();
+    let window = app.window(window_id).unwrap();
+    let n = 100;
+    let mut board = vec![false; n * n];
+    for i in 0..n {
+        for j in 0..n {
+            if rand::random() {
+                board[i + j * n] = true;
+            }
+        }
+    }
+    Model {
+        n,
+        temp: 2.0,
+        iter: 10000,
+        board,
+        egui: Egui::from_window(&window)
+    }
+}</code></pre>
+
+
+<pre class="line-numbers" data-line=""><code class="language-rust">fn update(_app: &App, model: &mut Model, _update: Update) {
+    let egui = &mut model.egui;
+    let ctx = egui.begin_frame();
+
+    egui::Window::new("Settings").show(&ctx, |ui| {
+        ui.label("Temperature:");
+        ui.add(egui::Slider::new(&mut model.temp, 0.0..=10.0));
+        ui.label("Iter/Update:");
+        ui.add(egui::Slider::new(&mut model.iter, 1..=100000));
+    });
+    
+    let mut rng = rand::thread_rng();
+    let n = model.n as i32;
+    let dirs: [(i32, i32); 4] = [(0, 1), (0, -1), (1, 0), (-1, 0)];
+    for _ in 0..model.iter {
+        let i = rng.gen_range(0..n);
+        let j = rng.gen_range(0..n);
+        let mut spin_sum = 0;
+        for (dx, dy) in &dirs {
+            let (nx, ny) = ((i + dx + n) % n, (j + dy + n) % n);
+            spin_sum += 2 * (model.board[(nx + ny * n) as usize] as i32) - 1;
+        }
+        let delta_energy = 2 * spin_sum * (2 * (model.board[(i + j * n) as usize] as i32) - 1);
+        if delta_energy &lt;= 0 || (-delta_energy as f64 / model.temp).exp() > rng.gen() {
+            model.board[(i + j * n) as usize] = !model.board[(i + j * n) as usize];
+        }
+    }
+}</code></pre>
+<pre class="line-numbers" data-line=""><code class="language-rust">fn raw_window_event(_app: &App, model: &mut Model, event: &nannou::winit::event::WindowEvent) {
+    model.egui.handle_raw_event(event);
+}</code></pre>
+<pre class="line-numbers" data-line=""><code class="language-rust">fn view(app: &App, model: &Model, frame: Frame) {
+    let draw = app.draw();
+    draw.background().color(BLACK);
+    let n = model.n;
+    let full_width = 500.0;
+    let unit_width = full_width / n as f32;
+    for i in 0..n {
+        for j in 0..n {
+            draw.rect()
+                .color(match model.board[i + j * n] {
+                    true => LIGHTCORAL,
+                    _ => LIGHTBLUE
+                })
+                .w(unit_width)
+                .h(unit_width)
+                .x(-full_width / 2.0 + j as f32 * unit_width)
+                .y(-full_width / 2.0 + i as f32 * unit_width);
+        }
+    }
+    draw.to_frame(app, &frame).unwrap();
+    model.egui.draw_to_frame(&frame).unwrap();
+}</code></pre>
+<!-- <pre class="line-numbers" data-line><code class="language-rust"></code></pre>
+<pre class="line-numbers" data-line><code class="language-rust"></code></pre>
+ -->
+
+
+</section>
+
+
+
+
+    <div id="copyright" data-scroll-section="">
+        Copyright 2023ⓒ D.C. Kim. All Rights Reserved.<br>
+    </div>
+
+
+
+<script src="/katex.min.74ff908d.js"></script>
+<script src="/prism-core.5193c4ea.js"></script>
+<script src="/prism-line-numbers.88920a2b.js"></script>
+<script src="/prism-toolbar.bdd58ac6.js"></script>
+<script src="/prism-copy-to-clipboard.0659b140.js"></script>
+<script src="/prism-line-highlight.f9b729ab.js"></script>
+<script src="/prism-python.9617f793.js"></script>
+<script src="/prism-rust.10601137.js"></script>
+<script src="/katex.78caeac6.js"></script>
+</body>
+</html>
